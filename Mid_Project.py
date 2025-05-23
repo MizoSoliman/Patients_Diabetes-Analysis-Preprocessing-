@@ -1,4 +1,4 @@
-
+%%writefile Project.py
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -8,6 +8,42 @@ import streamlit as st
 from io import StringIO
 import zipfile
 import os
+import streamlit_option_menu
+
+
+# Create Pages
+st.set_page_config(
+    page_title="UAE Diabetes Dashboard",
+    page_icon="🩺",
+    layout="wide"
+)
+# Custom CSS to shrink sidebar width
+# Shrink sidebar and menu item sizes
+st.markdown("""
+    <style>
+        /* تقليل عرض الشريط الجانبي */
+        [data-testid="stSidebar"] {
+            width: 180px;
+        }
+
+        /* تقليل حجم عناصر القائمة */
+        .css-1d391kg ul {
+            padding-left: 0;
+        }
+
+        .css-1d391kg ul li {
+            font-size: 13px !important;
+            padding: 6px 10px !important;
+        }
+
+        /* تقليل الأيقونات */
+        .css-1d391kg svg {
+            width: 16px;
+            height: 16px;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 
 # Read Data Set File
 # اسم ملف ZIP
@@ -20,12 +56,19 @@ with zipfile.ZipFile(zip_file, 'r') as zip_ref:
     
     # قراءة الملف مباشرة
 data = pd.read_csv('patient_dataset.csv')
-# Create Pages
-st.set_page_config(layout="wide", page_title = 'Mid Project')
+# Main title
+st.markdown("<h1 style='text-align:center; color:lightblue;'>🩺 UAE Hospital Diabetes Dashboard</h1>", unsafe_allow_html=True)
 
-page = st.sidebar.radio('Pages', ['Introduction', 'Data Analysis', 'Data Preprocessing', 'Conclusion'])
+from streamlit_option_menu import option_menu
 
-if page == 'Introduction':
+with st.sidebar:
+    page = option_menu(
+        menu_title="📋 Menu",
+        options=["🏠 Introduction", "📊 Data Analysis", "🛠️ Data Preprocessing", "✅ Conclusion"],
+        default_index=0,
+    )
+
+if page == '🏠 Introduction':
 
     st.markdown("<h1 style='text-align: center; color: lightblue;'>UAE Hospital Diabetes </h1>", unsafe_allow_html=True)
     st.write("""
@@ -36,7 +79,7 @@ if page == 'Introduction':
                 
 
 
-elif page == 'Data Analysis':
+elif page == '📊 Data Analysis':
     st.markdown("<h1 style='text-align: center; color: lightblue;'>Data Analysis</h1>", unsafe_allow_html=True)
 
     st.markdown(""" ### - **Import Libraries** : Importing necessary libraries for data analysis and visualization.""")
@@ -362,7 +405,7 @@ elif page == 'Data Analysis':
     plt.tight_layout()
     st.pyplot(fig)
 
-elif page == 'Data Preprocessing':
+elif page == '🛠️ Data Preprocessing':
 
     from sklearn.model_selection import train_test_split
     from sklearn.preprocessing import StandardScaler
@@ -630,7 +673,7 @@ elif page == 'Data Preprocessing':
             """
         )
 
-elif page == 'Conclusion':
+elif page == '✅ Conclusion':
     st.markdown("<h1 style='text-align: center; color: lightblue;'>Conclusion</h1>", unsafe_allow_html=True)
     st.write("""
                 This dataset serves as a rich source of information for understanding the patterns and demands associated with diabetes management in the UAE.
