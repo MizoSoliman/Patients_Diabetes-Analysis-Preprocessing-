@@ -6,3 +6,4 @@ seaborn
 scikit-learn
 category-encoders
 plotly
+streamlit_option_menu
