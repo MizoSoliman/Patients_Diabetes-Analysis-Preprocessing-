@@ -12,9 +12,9 @@ import streamlit_option_menu
 
 # Create Pages
 st.set_page_config(
+    layout="wide",
     page_title="UAE Diabetes Dashboard",
-    page_icon="🩺",
-    layout="wide"
+    page_icon="🩺"
 )
 # Custom CSS to shrink sidebar width
 # Shrink sidebar and menu item sizes
