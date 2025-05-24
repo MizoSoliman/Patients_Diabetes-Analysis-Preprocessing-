@@ -54,7 +54,8 @@ with zipfile.ZipFile(zip_file, 'r') as zip_ref:
     zip_ref.extractall()
     
     # قراءة الملف مباشرة
-data = pd.read_csv('patient_dataset.csv')
+df = pd.read_csv('patient_dataset.csv')
+data = df.sample(n=70000, random_state=42)
 # Main title
 st.markdown("<h1 style='text-align:center; color:lightblue;'>🩺 UAE Hospital Diabetes Dashboard</h1>", unsafe_allow_html=True)
 
