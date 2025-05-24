@@ -4,45 +4,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
 import streamlit as st
+from streamlit_option_menu import option_menu
+
 from io import StringIO
 import zipfile
 import os
-import streamlit_option_menu
-
-
-# Create Pages
-st.set_page_config(
-    layout="wide",
-    page_title="UAE Diabetes Dashboard",
-    page_icon="🩺"
-)
-# Custom CSS to shrink sidebar width
-# Shrink sidebar and menu item sizes
-st.markdown("""
-    <style>
-        /* تقليل عرض الشريط الجانبي */
-        [data-testid="stSidebar"] {
-            width: 180px;
-        }
-
-        /* تقليل حجم عناصر القائمة */
-        .css-1d391kg ul {
-            padding-left: 0;
-        }
-
-        .css-1d391kg ul li {
-            font-size: 13px !important;
-            padding: 6px 10px !important;
-        }
-
-        /* تقليل الأيقونات */
-        .css-1d391kg svg {
-            width: 16px;
-            height: 16px;
-        }
-    </style>
-""", unsafe_allow_html=True)
-
 
 # Read Data Set File
 # اسم ملف ZIP
@@ -56,19 +22,67 @@ with zipfile.ZipFile(zip_file, 'r') as zip_ref:
     # قراءة الملف مباشرة
 df = pd.read_csv('patient_dataset.csv')
 data = df.sample(n=70000, random_state=42)
-# Main title
-st.markdown("<h1 style='text-align:center; color:lightblue;'>🩺 UAE Hospital Diabetes Dashboard</h1>", unsafe_allow_html=True)
 
-from streamlit_option_menu import option_menu
+# Create Pages
+
+st.set_page_config(
+    page_title="UAE Diabetes Project",
+    layout="wide",
+    page_icon="🩺"
+)
+
+st.markdown("""
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        html, body, [class*="css"]  {
+            font-family: 'Cairo', sans-serif;
+        }
+        .main {
+            background-color: #f8f9fa;
+            padding: 1rem;
+        }
+        .block-container {
+            padding-top: 2rem;
+        }
+        h1, h2, h3 {
+            color: #1f77b4;
+        }
+        .stButton>button {
+            background-color: #0d6efd;
+            color: white;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1.5rem;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .stButton>button:hover {
+            background-color: #0056b3;
+        }
+        .css-1d391kg {
+            background-color: #f0f2f6;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+
 
 with st.sidebar:
     page = option_menu(
-        menu_title="📋 Menu",
-        options=["🏠 Introduction", "📊 Data Analysis", "🛠️ Data Preprocessing", "✅ Conclusion"],
+        "Pages",
+        ["Introduction", "Data Analysis", "Data Preprocessing", "Conclusion"],
+        icons=["house", "bar-chart", "tools", "check2-circle"],
+        menu_icon="cast",
         default_index=0,
+        styles={
+            "container": {"padding": "5px", "background-color": "#2C2C2E"},
+            "icon": {"color": "#0d6efd", "font-size": "20px"},
+            "nav-link": {"font-size": "16px", "text-align": "left", "margin":"5px"},
+            "nav-link-selected": {"background-color": "#0d6efd", "color": "white"},
+        }
     )
 
-if page == '🏠 Introduction':
+
+if page == 'Introduction':
 
     st.markdown("<h1 style='text-align: center; color: lightblue;'>UAE Hospital Diabetes </h1>", unsafe_allow_html=True)
     st.write("""
@@ -79,10 +93,10 @@ if page == '🏠 Introduction':
                 
 
 
-elif page == '📊 Data Analysis':
+elif page == 'Data Analysis':
     st.markdown("<h1 style='text-align: center; color: lightblue;'>Data Analysis</h1>", unsafe_allow_html=True)
 
-    st.markdown(""" ### - **Import Libraries** : Importing necessary libraries for data analysis and visualization.""")
+    st.markdown(""" ### **Import Libraries** : Importing necessary libraries for data analysis and visualization.""")
     st.code("""
             import numpy as np
             import pandas as pd
@@ -90,10 +104,11 @@ elif page == '📊 Data Analysis':
             import seaborn as sns
             import plotly.express as px
             import streamlit as st
+            from streamlit_option_menu import option_menu
             from io import StringIO
         """)
 
-    st.markdown(""" ### - **Load Data** : Loading the dataset into a pandas DataFrame for analysis.""")
+    st.markdown(""" ### **Load Data** : Loading the dataset into a pandas DataFrame for analysis.""")
     st.code("""
             # Read Data Set File
             data = pd.read_csv('patient_dataset.csv')
@@ -107,7 +122,7 @@ elif page == '📊 Data Analysis':
     st.write(data.head())
 
 
-    st.markdown(""" ### - **Data Understanding** : What Each Column Represents. """)
+    st.markdown(""" ### **Data Understanding** : What Each Column Represents. """)
     st.write("""
        ###### **1. 📅 `Visit_Date`  : The date on which the patient visited the hospital.**
 
@@ -136,7 +151,7 @@ elif page == '📊 Data Analysis':
        ###### **13. 💊 `Pharmacy time`  : Time spent at the pharmacy.**
         """)
 
-    st.markdown(""" ### - **Data Exploration (Overview about data ) :** """)
+    st.markdown(""" ### **Data Exploration (Overview about data ) :** """)
     st.write("- **Show Columns Information and Data Types :**")
     st.code("data.info()")
     # Capture df.info() output
@@ -172,7 +187,7 @@ elif page == '📊 Data Analysis':
         ax.set_ylabel(col)
         st.pyplot(fig)
 
-    st.markdown(""" ### - **Data Cleaning** : """)
+    st.markdown(""" ### **Data Cleaning** : """)
 
     st.write("- **Change Column Names format** :")
     st.code("data.columns")
@@ -254,7 +269,7 @@ elif page == '📊 Data Analysis':
     st.code("data.dtypes")
     st.write(data.dtypes)
 
-    st.markdown("""### - **Analysis Questions** : """)
+    st.markdown("""### **Analysis Questions** : """)
     st.write(""" 
     - **Univariant Questions .**
     - **Bivariant Questions .**
@@ -405,7 +420,7 @@ elif page == '📊 Data Analysis':
     plt.tight_layout()
     st.pyplot(fig)
 
-elif page == '🛠️ Data Preprocessing':
+elif page == 'Data Preprocessing':
 
     from sklearn.model_selection import train_test_split
     from sklearn.preprocessing import StandardScaler
@@ -673,7 +688,7 @@ elif page == '🛠️ Data Preprocessing':
             """
         )
 
-elif page == '✅ Conclusion':
+elif page == 'Conclusion':
     st.markdown("<h1 style='text-align: center; color: lightblue;'>Conclusion</h1>", unsafe_allow_html=True)
     st.write("""
                 This dataset serves as a rich source of information for understanding the patterns and demands associated with diabetes management in the UAE.
